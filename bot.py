@@ -2,10 +2,12 @@
 
 
 import os
-from flask import Flask
+import telebot
+from flask import Flask, request
 
 
 token = '257915035:AAF7z9deRa4CDL4wLTWTyZX5x_8kYpsvOD8'
+bot = telebot.TeleBot(token)
 app = Flask(__name__)
 
 @bot.message_handler(commands=['start'])
@@ -16,13 +18,13 @@ def start(message):
 def echo_message(message):
     bot.reply_to(message, message.text)
 
-@server.route("/bot", methods=['POST'])
+@app.route("/bot", methods=['POST'])
 def getMessage():
     bot.process_new_updates([telebot.types.Update.de_json(request.stream.read().decode("utf-8"))])
     return "!", 200
 
 
-@server.route("/")
+@app.route("/")
 def webhook():
     bot.remove_webhook()
     bot.set_webhook(url="https://shielded-lowlands-74701.herokuapp.com/bot")
