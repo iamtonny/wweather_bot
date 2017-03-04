@@ -36,19 +36,32 @@
 # app = Flask(__name__)
 
 
-import config
 import telebot
+from flask import Flask
 from telebot import util
 from queryes import get_weather
 
+import config
 import messages_shaper
+from database import db_session
+from database import init_db
+from models import User
 
 bot = telebot.TeleBot(config.token)
-
+app = Flask(__name__)
 
 @bot.message_handler(commands=['weather'])
 def weather_city(message):
     city = ' '.join(message.text.split(' ')[1:])
+    user = User.query.filter_by(id=message.from_user.id).first()
+
+    if user is None:
+        user = User(user_id=message.from_user.id, username=message.from_user.username, city=city)
+        db_session.add(user)
+        db_session.commit()
+    else:
+        pass
+
     mode_simple = False
 
     ten_days_weather_raw = get_weather(city, mode_simple)
@@ -59,13 +72,22 @@ def weather_city(message):
             complex_messages = messages_shaper.shape_complex_weather_message(ten_days_weather_raw[0])
 
             for msg in complex_messages:
-                bot.send_message(message.chat.id, msg)    
+                bot.send_message(message.chat.id, msg)
 
         for day_weather_raw in ten_days_weather_raw:
-            bot.send_message(message.chat.id, messages_shaper.shape_simple_weather_message(day_weather_raw))
+            bot.send_message(message.chat.id, messages_shaper.shape_simple_weather_message(day_weather_raw['item']['forecast']))
     else:
         bot.send_message(message.chat.id, messages_shaper.MESSAGE_CITY_NOT_FOUND)
 
 
+@app.teardown_appcontext
+def shutdown_session(exception=None):
+    """Flask will automatically remove database sessions
+    at the end of the request or when the application shuts down.
+    """
+    db_session.remove()
+
+
 if __name__ == '__main__':
-     bot.polling(none_stop=True)
+    init_db()
+    bot.polling(none_stop=True)
