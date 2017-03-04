@@ -23,7 +23,7 @@ def start(message):
 
 @bot.message_handler(commands=['weather'])
 def weather_city(message):
-    print(json.loads(message)['text'])
+    print(message['text'])
     bot.reply_to(message, 'Hello, ' + message.from_user.first_name)
 
 @bot.message_handler(func=lambda message: True, content_types=['text'])
