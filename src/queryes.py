@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 # coding=utf-8
+import urllib.parse
+import urllib.request
+import json
 
 
 def get_weather(city):
