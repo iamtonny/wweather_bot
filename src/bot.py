@@ -2,8 +2,13 @@
 
 
 import os
+import urllib.parse
+import urllib.request
+import json
+
 import telebot
 from flask import Flask, request
+from queryes import get_weather
 
 import config
 
@@ -16,6 +21,11 @@ Handler on "start" command
 """
 @bot.message_handler(commands=['start'])
 def start(message):
+    bot.reply_to(message, 'Hello, ' + message.from_user.first_name)
+
+@bot.message_handler(commands=['weather'])
+def weather_city(message):
+    print(message)
     bot.reply_to(message, 'Hello, ' + message.from_user.first_name)
 
 @bot.message_handler(func=lambda message: True, content_types=['text'])
