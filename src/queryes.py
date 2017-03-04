@@ -5,17 +5,25 @@ import urllib.request
 import json
 
 
+BASE_URL = "https://query.yahooapis.com/v1/public/yql?"
+
 def get_weather(city, simple=True):
-    baseurl = "https://query.yahooapis.com/v1/public/yql?"
+
     if simple:
         yql_query = ("select item.forecast from weather.forecast "
             "where woeid in (select woeid from geo.places(1) where text=\"" + city + "\") and u=\"c\"")
     else:
-        yql_query = ("select location, wind, atmosphere, astronomy, item.forecast from weather.forecast "
+        yql_query = ("select wind, atmosphere, astronomy, item.forecast from weather.forecast "
             "where woeid in (select woeid from geo.places(1) where text=\"" + city + "\") and u=\"c\"")
-    yql_url = baseurl + urllib.parse.urlencode({'q':yql_query}) + "&format=json"
+
+    yql_url = BASE_URL + urllib.parse.urlencode({'q':yql_query}) + "&format=json"
     result = urllib.request.urlopen(yql_url).read()
     data = json.loads(result.decode("utf-8"))
+
+    if data is None or data['query'] is None or data['query']['results'] is None or \
+     data['query']['results']['channel'] is None:
+        return None
+
     return data['query']['results']['channel']
 
 

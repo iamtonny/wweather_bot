@@ -15,21 +15,11 @@
 # bot = telebot.TeleBot(config.token)
 # app = Flask(__name__)
 #
-# """
-# Handler on "start" command
-# """
-# @bot.message_handler(commands=['start'])
-# def start(message):
-#     bot.reply_to(message, 'Hello, ' + message.from_user.first_name)
 #
 # @bot.message_handler(commands=['weather'])
 # def weather_city(message):
 #     print(message['text'])
 #     bot.reply_to(message, 'Hello, ' + message.from_user.first_name)
-#
-# @bot.message_handler(func=lambda message: True, content_types=['text'])
-# def echo_message(message):
-#     bot.reply_to(message, message.text)
 #
 # @app.route("/bot", methods=['POST'])
 # def getMessage():
@@ -50,20 +40,31 @@ import config
 import telebot
 from telebot import util
 from queryes import get_weather
-from messages_shaper import shape_simple_message
+
+import messages_shaper
 
 bot = telebot.TeleBot(config.token)
 
-# @bot.message_handler(content_types=["text"])
-# def repeat_all_messages(message): # Название функции не играет никакой роли, в принципе
-#     bot.send_message(message.chat.id, message.text)
 
 @bot.message_handler(commands=['weather'])
 def weather_city(message):
     city = ' '.join(message.text.split(' ')[1:])
-    ten_days_weather = get_weather(city, simple=True)
-    for day_weather in ten_days_weather:
-        bot.send_message(message.chat.id, shape_simple_message(day_weather))
+    mode_simple = False
+
+    ten_days_weather_raw = get_weather(city, mode_simple)
+
+    if ten_days_weather_raw is not None:
+        if not mode_simple:
+            # complex information are the same in each of days
+            complex_messages = messages_shaper.shape_complex_weather_message(ten_days_weather_raw[0])
+
+            for msg in complex_messages:
+                bot.send_message(message.chat.id, msg)    
+
+        for day_weather_raw in ten_days_weather_raw:
+            bot.send_message(message.chat.id, messages_shaper.shape_simple_weather_message(day_weather_raw))
+    else:
+        bot.send_message(message.chat.id, messages_shaper.MESSAGE_CITY_NOT_FOUND)
 
 
 if __name__ == '__main__':
