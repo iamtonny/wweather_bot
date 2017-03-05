@@ -23,13 +23,11 @@ app = Flask(__name__)
 @bot.message_handler(commands=['start'])
 def start(message):
     user = User.query.get(message.from_user.id)
-    print(user)
 
     if user is None:
         user = User(
             user_id=message.from_user.id,
             username=message.from_user.username)
-        print(user)
         db_session.add(user)
         db_session.commit()
 
