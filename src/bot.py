@@ -2,40 +2,6 @@
 # coding=utf-8
 
 
-# import os
-# import json
-#
-# import telebot
-# from flask import Flask, request
-# from queryes import get_weather
-#
-# import config
-#
-#
-# bot = telebot.TeleBot(config.token)
-# app = Flask(__name__)
-#
-#
-# @bot.message_handler(commands=['weather'])
-# def weather_city(message):
-#     print(message['text'])
-#     bot.reply_to(message, 'Hello, ' + message.from_user.first_name)
-#
-# @app.route("/bot", methods=['POST'])
-# def getMessage():
-#     bot.process_new_updates([telebot.types.Update.de_json(request.stream.read().decode("utf-8"))])
-#     return "!", 200
-#
-# @app.route("/")
-# def webhook():
-#     bot.remove_webhook()
-#     bot.set_webhook(url="https://shielded-lowlands-74701.herokuapp.com/bot")
-#     return "!", 200
-#
-# app.run(host="0.0.0.0", port=os.environ.get('PORT', 5000))
-# app = Flask(__name__)
-
-
 import telebot
 from flask import Flask
 from queryes import get_weather
@@ -47,6 +13,7 @@ import inspection
 from database import db_session
 from database import init_db
 from models import User
+
 
 bot = telebot.TeleBot(config.TOKEN)
 app = Flask(__name__)
@@ -177,6 +144,18 @@ def weather_city(message):
         bot.send_message(message.chat.id, constants.MESSAGE_CITY_NOT_FOUND)
 
 
+@app.route("/bot", methods=['POST'])
+def getMessage():
+    bot.process_new_updates([telebot.types.Update.de_json(request.stream.read().decode("utf-8"))])
+    return "!", 200
+
+@app.route("/")
+def webhook():
+    bot.remove_webhook()
+    bot.set_webhook(url="https://shielded-lowlands-74701.herokuapp.com/bot")
+    return "!", 200
+
+
 @app.teardown_appcontext
 def shutdown_session(exception=None):
     """Flask will automatically remove database sessions
@@ -186,5 +165,6 @@ def shutdown_session(exception=None):
 
 
 if __name__ == '__main__':
+    app.run(host="0.0.0.0", port=os.environ.get('PORT', 5000))
     init_db()
     bot.polling(none_stop=True)
