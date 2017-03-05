@@ -49,9 +49,10 @@ MESSAGE_UNDERFINED = "Underfined"
 MESSAGE_COMMANDS = ("Commands:\n"
                     "/weather - get weather data for the saved city\n"
                     "/weather CITY - get weather data for the CITY\n"
-                    "/setHome CITY- set the current CITY\n"
-                    "/hideDetails - show only basic information\n"
-                    "/setDays DAYS - set the number of DAYS displayed. Max = 10\n")
+                    "/sethome CITY- set the current CITY\n"
+                    "/hidedetails - show only basic information\n"
+                    "/showdetails - show all wheather information"
+                    "/setdays DAYS - set the number of DAYS displayed. Max = 10\n")
 MESSAGE_SETTINGS = EMOJI_SETTINGS + "Settings:\n "
 MESSAGE_HELLO = ("{vulcan_salute}Hey, i'am weather bot {face} and i will find weather forecast to you my lord ;)\n"
                  "If you want to see my setting, please, enter \"/settings\" or \"/help\""

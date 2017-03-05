@@ -51,7 +51,7 @@ def settings(message):
     bot.send_message(message.chat.id, constants.MESSAGE_COMMANDS)
 
 
-@bot.message_handler(commands=['setHome'])
+@bot.message_handler(commands=['sethome'])
 def set_home(message):
 
     user = User.query.get(message.from_user.id)
@@ -68,7 +68,7 @@ def set_home(message):
         bot.send_message(message.chat.id, constants.MESSAGE_WRONG)
 
 
-@bot.message_handler(commands=['hideDetails'])
+@bot.message_handler(commands=['hidedetails'])
 def hide_details(message):
 
     user = User.query.get(message.from_user.id)
@@ -81,7 +81,7 @@ def hide_details(message):
         bot.send_message(message.chat.id, constants.MESSAGE_WRONG)
 
 
-@bot.message_handler(commands=['showDetails'])
+@bot.message_handler(commands=['showdetails'])
 def show_details(message):
 
     user = User.query.get(message.from_user.id)
@@ -94,7 +94,7 @@ def show_details(message):
         bot.send_message(message.chat.id, constants.MESSAGE_WRONG)
 
 
-@bot.message_handler(commands=['setDays'])
+@bot.message_handler(commands=['setdays'])
 def set_days(message):
 
     days = ' '.join(message.text.split(' ')[1:])
