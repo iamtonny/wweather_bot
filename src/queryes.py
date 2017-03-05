@@ -3,22 +3,30 @@
 import urllib.parse
 import urllib.request
 import json
+from urllib.error import HTTPError
+
+import config
 
 
-BASE_URL = "https://query.yahooapis.com/v1/public/yql?"
+def get_weather(city=None, details=False):
 
-def get_weather(city, simple=True):
-
-    if simple:
+    if not details:
         yql_query = ("select item.forecast from weather.forecast "
             "where woeid in (select woeid from geo.places(1) where text=\"" + city + "\") and u=\"c\"")
     else:
         yql_query = ("select wind, atmosphere, astronomy, item.forecast from weather.forecast "
             "where woeid in (select woeid from geo.places(1) where text=\"" + city + "\") and u=\"c\"")
 
-    yql_url = BASE_URL + urllib.parse.urlencode({'q':yql_query}) + "&format=json"
-    result = urllib.request.urlopen(yql_url).read()
-    data = json.loads(result.decode("utf-8"))
+    yql_url = config.BASE_QUERY_URL + urllib.parse.urlencode({'q':yql_query}) + "&format=json"
+
+    # For invalid requests
+    try:
+
+        result = urllib.request.urlopen(yql_url).read()
+        data = json.loads(result.decode("utf-8"))
+
+    except HTTPError as e:
+        data = None
 
     if data is None or data['query'] is None or data['query']['results'] is None or \
      data['query']['results']['channel'] is None:
