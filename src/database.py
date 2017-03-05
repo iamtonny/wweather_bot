@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-#coding=utf-8
+# coding=utf-8
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
@@ -13,6 +13,7 @@ db_session = scoped_session(sessionmaker(autocommit=False,
                                          bind=engine))
 Base = declarative_base()
 Base.query = db_session.query_property()
+
 
 def init_db():
     import models

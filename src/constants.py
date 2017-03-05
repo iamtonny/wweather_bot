@@ -4,7 +4,7 @@
 
 # EMOJIES
 EMOJI_TORNADO = u'\U0001F32A'
-EMOJI_THUNDERSTORM  = u'\U000026C8'
+EMOJI_THUNDERSTORM = u'\U000026C8'
 EMOJI_SUN = u'\U0001F323'
 EMOJI_RAIN = u'\U0001F327'
 EMOJI_SNOW = u'\U0001F328'
@@ -34,6 +34,8 @@ EMOJI_BACKHAND_RIGHT = u'\U0001F449'
 EMOJI_CONSTRUCTION_WORKER = u'\U0001F477'
 EMOJI_OLD_MAN = u'\U0001F474'
 EMOJI_SETTINGS = u'\U00002699'
+EMOJI_VULCAN_SALUTE = u'\U0001F596'
+EMOJI_ROBOT_FACE = u'\U0001F916'
 
 # MESSAGES
 MESSAGE_CITY_NOT_FOUND = "Sorry, but city is not found." + EMOJI_PENSIVE_FACE
@@ -51,3 +53,6 @@ MESSAGE_COMMANDS = ("Commands:\n"
                     "/hideDetails - show only basic information\n"
                     "/setDays DAYS - set the number of DAYS displayed. Max = 10\n")
 MESSAGE_SETTINGS = EMOJI_SETTINGS + "Settings:\n "
+MESSAGE_HELLO = ("{vulcan_salute}Hey, i'am weather bot {face} and i will find weather forecast to you my lord ;)\n"
+                 "If you want to see my setting, please, enter \"/settings\" or \"/help\""
+                 .format(vulcan_salute=EMOJI_VULCAN_SALUTE * 3, face=EMOJI_ROBOT_FACE))

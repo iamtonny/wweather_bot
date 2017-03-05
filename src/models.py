@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-#coding=utf-8
+# coding=utf-8
 
 from sqlalchemy import Column, Integer, String, Boolean
 from database import Base
@@ -13,7 +13,8 @@ class User(Base):
     num_display_days = Column(Integer)
     details = Column(Boolean)
 
-    def __init__(self, user_id=None, username=None, city=None, display_days=10, details=False):
+    def __init__(self, user_id=None, username=None,
+                 city=None, display_days=10, details=False):
         self.id = user_id
         self.username = username
         self.city = city
