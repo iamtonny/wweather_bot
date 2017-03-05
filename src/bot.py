@@ -22,7 +22,7 @@ app = Flask(__name__)
 
 @bot.message_handler(commands=['start'])
 def start(message):
-
+    print('hello')
     user = User.query.get(message.from_user.id)
 
     if user is None:
