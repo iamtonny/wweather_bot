@@ -22,13 +22,14 @@ app = Flask(__name__)
 
 @bot.message_handler(commands=['start'])
 def start(message):
-    print('hello')
     user = User.query.get(message.from_user.id)
+    print(user)
 
     if user is None:
         user = User(
             user_id=message.from_user.id,
             username=message.from_user.username)
+        print(user)
         db_session.add(user)
         db_session.commit()
 
@@ -165,6 +166,6 @@ def shutdown_session(exception=None):
     db_session.remove()
 
 
-app.run(host="0.0.0.0", port=os.environ.get('PORT', 5000))
 init_db()
-bot.polling(none_stop=True)
+app.run(host="0.0.0.0", port=os.environ.get('PORT', 5000))
+app = Flask(__name__)
