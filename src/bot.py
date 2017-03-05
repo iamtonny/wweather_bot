@@ -4,6 +4,7 @@
 import os
 import telebot
 from flask import Flask
+from flask import request
 from queryes import get_weather
 
 import config
