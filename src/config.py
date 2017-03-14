@@ -3,6 +3,6 @@
 
 import os
 
-TOKEN = os.environ['TOKEN']'
+TOKEN = os.environ['TOKEN']
 DATABASE_URL = os.environ['DATABASE_URL']
 BASE_QUERY_URL = "https://query.yahooapis.com/v1/public/yql?"
