@@ -117,6 +117,8 @@ def weather_city(message):
     city = ' '.join(message.text.split(' ')[1:])
     user = User.query.get(message.from_user.id)
 
+    print(city)
+
     if user is None:
         return
     elif user is not None and not city:
