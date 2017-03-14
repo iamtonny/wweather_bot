@@ -8,7 +8,7 @@ from database import Base
 class User(Base):
     __tablename__ = 'users'
     id = Column(Integer, primary_key=True)
-    telegram_id = Column(Integer, unique=True)
+    telegram_id = Column(Integer)
     username = Column(String(100), unique=True)
     city = Column(String(100))
     num_display_days = Column(Integer)
