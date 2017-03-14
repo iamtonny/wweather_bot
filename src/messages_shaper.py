@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # coding=utf-8
 
-import constants
+from . import constants
 
 
 def get_weather_emoji(code=3200):

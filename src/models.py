@@ -2,7 +2,7 @@
 # coding=utf-8
 
 from sqlalchemy import Column, Integer, String, Boolean
-from database import Base
+from .database import Base
 
 
 class User(Base):

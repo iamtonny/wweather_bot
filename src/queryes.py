@@ -7,7 +7,7 @@ import json
 import eventlet
 from urllib.error import HTTPError
 
-import config
+from . import config
 
 
 def get_weather(city=None, details=False):
