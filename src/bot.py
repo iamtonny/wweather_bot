@@ -22,7 +22,7 @@ app = Flask(__name__)
 
 @bot.message_handler(commands=['start'])
 def start(message):
-    user = User.query.filter(telegram_id=message.from_user.id).first()
+    user = User.query.filter_by(telegram_id=message.from_user.id).first()
 
     if user is None:
         user = User(
@@ -37,7 +37,7 @@ def start(message):
 @bot.message_handler(commands=['settings', 'help'])
 def settings(message):
 
-    user = User.query.filter(telegram_id=message.from_user.id).first()
+    user = User.query.filter_by(telegram_id=message.from_user.id).first()
 
     bot.send_message(message.chat.id, constants.MESSAGE_SETTINGS)
 
@@ -54,7 +54,7 @@ def settings(message):
 @bot.message_handler(commands=['sethome'])
 def set_home(message):
 
-    user = User.query.filter(telegram_id=message.from_user.id).first()
+    user = User.query.filter_by(telegram_id=message.from_user.id).first()
     city = ' '.join(message.text.split(' ')[1:])
 
     if user is not None and city is not None:
@@ -71,7 +71,7 @@ def set_home(message):
 @bot.message_handler(commands=['hidedetails'])
 def hide_details(message):
 
-    user = User.query.filter(telegram_id=message.from_user.id).first()
+    user = User.query.filter_by(telegram_id=message.from_user.id).first()
 
     if user is not None:
         user.details = False
@@ -84,7 +84,7 @@ def hide_details(message):
 @bot.message_handler(commands=['showdetails'])
 def show_details(message):
 
-    user = User.query.filter(telegram_id=message.from_user.id).first()
+    user = User.query.filter_by(telegram_id=message.from_user.id).first()
 
     if user is not None:
         user.details = True
@@ -98,7 +98,7 @@ def show_details(message):
 def set_days(message):
 
     days = ' '.join(message.text.split(' ')[1:])
-    user = User.query.filter(telegram_id=message.from_user.id).first()
+    user = User.query.filter_by(telegram_id=message.from_user.id).first()
 
     if user is not None and inspection.represent_int(days):
         user.num_display_days = int(days)
@@ -115,13 +115,19 @@ def set_days(message):
 def weather_city(message):
 
     city = ' '.join(message.text.split(' ')[1:])
-    user = User.query.filter(telegram_id=message.from_user.id).first()
+    user = User.query.filter_by(telegram_id=message.from_user.id).first()
 
     if user is None:
         return
     elif user is not None and not city:
+        city_for_find = ""
+
+        if user.city is not None:
+            city_for_find = user.city
+
         all_days_weather_raw = get_weather(
-            city=user.city, details=user.details)
+            city=city_for_find, details=user.details)
+
     elif user is not None and city:
         all_days_weather_raw = get_weather(city=city, details=user.details)
 
